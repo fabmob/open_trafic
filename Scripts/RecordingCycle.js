@@ -1,3 +1,4 @@
+const Environment = require("./Environment");
 const OpenDataCamAPI = require ( "./OpenDataCamAPI" );
 const Utilities = require("./Utilities");
 
@@ -26,7 +27,10 @@ class RecordingCycle {
         
         // Get
         var counter = OpenDataCamAPI.GetCounter ( recId );
-        if ( counter ) {
+        if ( ! Environment.SaveOpenDataCamRaw ) {
+            console.log ( "[" + new Date ().toISOString () + "] Recording successfully retreived" );
+        }
+        else if ( counter ) {
             let fileName = "./recordings/recording_counter_" + new Date ().toISOString () + ".json";
             Utilities.WriteJson ( counter, fileName );
             console.log ( "[" + new Date ().toISOString () + "] Recording stored in file '" + fileName + "'" );

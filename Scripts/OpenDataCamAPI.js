@@ -12,7 +12,7 @@ class OpenDataCamAPI {
 
     static GetStatus () {
         var xmlHttp = new XMLHttpRequest ();
-        xmlHttp.open ( "GET", Environment.URI + this.StatusUri, false );
+        xmlHttp.open ( "GET", Environment.OpenDataCamUrl + this.StatusUri, false );
         xmlHttp.send ( null );
         if ( xmlHttp.status == 200 ) {
             return JSON.parse ( xmlHttp.responseText );
@@ -24,7 +24,7 @@ class OpenDataCamAPI {
 
     static StartRecording () {
         var xmlHttp = new XMLHttpRequest ();
-        xmlHttp.open ( "GET", Environment.URI + this.StartRecordingUri, false );
+        xmlHttp.open ( "GET", Environment.OpenDataCamUrl + this.StartRecordingUri, false );
         xmlHttp.send ( null );
         if ( xmlHttp.status == 200 ) {
             console.log ( "[" + new Date ().toISOString () + "] Recording successfully started" );
@@ -37,7 +37,7 @@ class OpenDataCamAPI {
 
     static StopRecording () {
         var xmlHttp = new XMLHttpRequest ();
-        xmlHttp.open ( "GET", Environment.URI + this.StopRecordingUri, false );
+        xmlHttp.open ( "GET", Environment.OpenDataCamUrl + this.StopRecordingUri, false );
         xmlHttp.send ( null );
         if ( xmlHttp.status == 200 ) {
             console.log ( "[" + new Date ().toISOString () + "] Recording successfully stopped" );
@@ -50,7 +50,7 @@ class OpenDataCamAPI {
 
     static GetCounter ( recId ) {
         var xmlHttp = new XMLHttpRequest ();
-        xmlHttp.open ( "GET", Environment.URI + this.GetCounterUri.replace ( ":id", recId ), false );
+        xmlHttp.open ( "GET", Environment.OpenDataCamUrl + this.GetCounterUri.replace ( ":id", recId ), false );
         xmlHttp.send ( null );
         if ( xmlHttp.status == 200 ) {
             console.log ( "[" + new Date ().toISOString () + "] Recording counter successfully retreived" );
@@ -64,7 +64,7 @@ class OpenDataCamAPI {
 
     static GetRecordingsCount () {
         var xmlHttp = new XMLHttpRequest ();
-        xmlHttp.open ( "GET", Environment.URI + this.GetAllRecordingsUri, false );
+        xmlHttp.open ( "GET", Environment.OpenDataCamUrl + this.GetAllRecordingsUri, false );
         xmlHttp.send ( null );
         if ( xmlHttp.status == 200 ) {
             var total = JSON.parse ( xmlHttp.responseText ).total;
@@ -80,7 +80,7 @@ class OpenDataCamAPI {
     static DeleteOldRecordings ( beforeDays ) {
         var total = this.GetRecordingsCount ();
         var xmlHttp = new XMLHttpRequest ();
-        xmlHttp.open ( "GET", Environment.URI + this.GetAllRecordingsUri.replace ( "{limit}", total ), false );
+        xmlHttp.open ( "GET", Environment.OpenDataCamUrl + this.GetAllRecordingsUri.replace ( "{limit}", total ), false );
         xmlHttp.send ( null );
         if ( xmlHttp.status == 200 ) {
             var beforeDate = new Date ();
@@ -110,7 +110,7 @@ class OpenDataCamAPI {
         var xmlHttp = new XMLHttpRequest ();
         for ( let i = 0 ; i < ids.length ; i++ ) {
             console.log ( "[" + new Date ().toISOString () + "] Prepare to delete recording : " + ids [ i ] + " number " + i );
-            xmlHttp.open ( "DELETE", Environment.URI + this.DeleteRecordingUri.replace ( ":id", ids [ i ] ), false );
+            xmlHttp.open ( "DELETE", Environment.OpenDataCamUrl + this.DeleteRecordingUri.replace ( ":id", ids [ i ] ), false );
             xmlHttp.send ( null );
             if ( xmlHttp.status == 200 ) {
                 console.log ( "[" + new Date ().toISOString () + "] Recording deleted : " + ids [ i ] + " number " + i );

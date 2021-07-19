@@ -1,3 +1,8 @@
 {
-    "URI" : "http://192.168.0.1:8080"
+    "OpenDataCamUrl" : "http://192.168.0.1:8080",
+    "HasuraUrl" : "https://url.com/v1/graphql",
+    "PlaceId" : "faf03f6f-247f-4744-a2a5-dd06b7c9e338",
+    "SaveAggregate" : true,
+    "SaveOpenDataCamRaw" : true,
+    "HasuraAdminSecret" : "..."
 }

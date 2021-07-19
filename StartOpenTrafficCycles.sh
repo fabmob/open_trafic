@@ -8,6 +8,6 @@ PID=`cat last_call.pid`
 
 kill -9 $PID
 
-node Scripts/OpenTraffic.js > logs.txt &
+node Scripts/OpenTraffic.js >> logs.txt &
 
 echo $! > last_call.pid

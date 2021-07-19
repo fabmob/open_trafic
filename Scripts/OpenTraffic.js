@@ -2,6 +2,7 @@ const RecordingCycle = require ( "./RecordingCycle" );
 const AggregateDataCam = require ( "./AggregateDataCam" );
 const CronJob = require ( "cron" ).CronJob;
 const OpenDataCamAPI = require("./OpenDataCamAPI");
+const HasuraAPI = require("./HasuraAPI");
 
 let deleteRecordingsBeforeDays = 7;
 
@@ -91,8 +92,11 @@ function CronIntervalleFromArgs () {
 
 async function OpenTrafficCycle () {
     var counter = await RecordingCycle.NewCycle ();
-    if ( counter )
-        AggregateDataCam.Aggregate ( counter, intervalle * 60, fps );
+    if ( counter ) {
+        var aggregation = AggregateDataCam.Aggregate ( counter, intervalle * 60, fps );
+        if ( aggregation )
+            HasuraAPI.InsertComptages ( aggregation );
+    }
     
     // Delete old recordings
     OpenDataCamAPI.DeleteOldRecordings ( deleteRecordingsBeforeDays );
