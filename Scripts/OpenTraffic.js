@@ -102,10 +102,11 @@ async function OpenTrafficCycle () {
     OpenDataCamAPI.DeleteOldRecordings ( deleteRecordingsBeforeDays );
 }
 
+//////// Test ////////
 // OpenTrafficCycle ();
 // return;
 
-console.log ( "Launch cron job with : " + cronSeconds + " seconds, " + cronMinutes + " minutes, " + cronHours + " hours, " + intervalle + " intervalle, " + fps + " fps" );
+console.log ( "[" + new Date ().toISOString () + "] Launch cron job with : " + cronSeconds + " seconds, " + cronMinutes + " minutes, " + cronHours + " hours, " + intervalle + " intervalle, " + fps + " fps" );
 
 var job = new CronJob ( cronSeconds + " " + cronMinutes + " " + cronHours + " * * *", OpenTrafficCycle, null, true, "Europe/Paris" );
 

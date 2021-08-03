@@ -21,7 +21,8 @@ class AggregateDataCam {
         var placeId = HasuraAPI.GetOrCreatePlaceId ( Environment.PlaceName );
 
         // Get lines
-        var laneIds = Object.keys ( json.areas );
+        // var laneIds = Object.keys ( json.areas );
+        var lanes = this.GetLaneIds ( json.areas, placeId );
 
         let count;
         if ( fps ) {
@@ -32,9 +33,9 @@ class AggregateDataCam {
         }
 
         var comptages = {};
-        for ( let i = 0 ; i < laneIds.length ; i++ ) {
+        for ( let i = 0 ; i < lanes.length ; i++ ) {
 
-            comptages [ laneIds [ i ] ] = [];
+            comptages [ lanes [ i ].originalId ] = [];
             for ( let j = 0 ; j < count ; j++ ) {
                 let comptage = new Comptage ();
                 comptage.start_time = Math.floor ( startingTime + intervalle * j );
@@ -44,10 +45,10 @@ class AggregateDataCam {
                 comptage.day = date [ 0 ];
                 comptage.day_time = date [ 1 ];
 
-                comptage.lane_id = laneIds [ i ];
+                comptage.lane_id = lanes [ i ].id;
                 comptage.place_id = placeId;
-                comptages [ laneIds [ i ] ].push ( [] );
-                comptages [ laneIds [ i ] ][ j ] = comptage;
+                comptages [ lanes [ i ].originalId ].push ( [] );
+                comptages [ lanes [ i ].originalId ][ j ] = comptage;
             }
         }
 
@@ -77,23 +78,27 @@ class AggregateDataCam {
         }
 
         let flatArray = [];
-        for ( let i = 0 ; i < laneIds.length ; i++ ) {
+        for ( let i = 0 ; i < lanes.length ; i++ ) {
             for ( let j = 0 ; j < count ; j++ ) {
-                flatArray.push ( comptages [ laneIds [ i ] ][ j ] );
+                flatArray.push ( comptages [ lanes [ i ].originalId ][ j ] );
             }
         }
 
         return flatArray;
     }
 
-    static GetLaneIds ( areas ) {
-        var laneIds = [];
+    static GetLaneIds ( areas, placeId ) {
+        var lanes = [];
         
-        for ( lane in areas ) {
-            laneIds.push ( HasuraAPI.GetOrCreateLaneId ( lane.name ) );
+        var ids = Object.keys ( areas );
+
+        for ( let i = 0 ; i < ids.length ; i++ ) {
+            var newlane = HasuraAPI.GetOrCreateLaneId ( areas [ ids [ i ] ], placeId );
+            newlane.originalId = ids [ i ];
+            lanes.push ( newlane );
         }
 
-        return laneIds;
+        return lanes;
     }
 
 }
