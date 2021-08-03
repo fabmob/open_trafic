@@ -2,6 +2,8 @@ const { type } = require("os");
 const Environment = require("./Environment");
 const Utilities = require("./Utilities");
 const Comptage = require("./Comptage");
+const { isBuffer } = require("util");
+const HasuraAPI = require("./HasuraAPI");
 
 class AggregateDataCam {
 
@@ -15,6 +17,8 @@ class AggregateDataCam {
 
         var firstFrame = json.counterHistory [ 0 ].frameId;
         var lastFrame = json.counterHistory [ json.counterHistory.length - 1 ].frameId;
+
+        var placeId = HasuraAPI.GetOrCreatePlaceId ( Environment.PlaceName );
 
         // Get lines
         var laneIds = Object.keys ( json.areas );
@@ -41,7 +45,7 @@ class AggregateDataCam {
                 comptage.day_time = date [ 1 ];
 
                 comptage.lane_id = laneIds [ i ];
-                comptage.place_id = Environment.PlaceId;
+                comptage.place_id = placeId;
                 comptages [ laneIds [ i ] ].push ( [] );
                 comptages [ laneIds [ i ] ][ j ] = comptage;
             }
@@ -80,6 +84,16 @@ class AggregateDataCam {
         }
 
         return flatArray;
+    }
+
+    static GetLaneIds ( areas ) {
+        var laneIds = [];
+        
+        for ( lane in areas ) {
+            laneIds.push ( HasuraAPI.GetOrCreateLaneId ( lane.name ) );
+        }
+
+        return laneIds;
     }
 
 }
