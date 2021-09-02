@@ -1,0 +1,11 @@
+{
+  "name": "opentrafficaggregation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cron": "1.8.2",
+    "fs": "0.0.1-security",
+    "xmlhttprequest": "1.8.0"
+  }
+}
